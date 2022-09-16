@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+    ozon-api-app:
+        image: 'ozon-api-app-prod'
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+        ports:
+            - "9000:9000"
+
+    ozon-api-db:
+        image: mysql:5.7
+        restart: always
+        ports:
+            - ${DB_PORT}:3306
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        env_file:
+            - .env
+        volumes:
+            - ozon-api-mysql:/var/lib/mysql
+volumes:
+    ozon-api-mysql:
